@@ -9,7 +9,8 @@ function Sidebar() {
         <>
             <NavLink onClick={() => navigate(Paths.counters)} label="Счетчики" />
             <NavLink onClick={() => navigate(Paths.timers)} label="Таймер" />
-            <NavLink onClick={() => navigate(Paths.state)} label="Соло компонент" />
+            <NavLink onClick={() => navigate(Paths.state)} label="Изменения стейта" />
+            <NavLink onClick={() => navigate(Paths.context)} label="Изменения контекста" />
         </>
     );
 }
