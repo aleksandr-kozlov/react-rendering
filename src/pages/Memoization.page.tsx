@@ -1,4 +1,4 @@
-import React, { ReducerState, useReducer } from 'react';
+import React, { ReducerState } from 'react';
 import { Fieldset, TextInput } from '@mantine/core';
 
 type SetName = {
@@ -38,9 +38,9 @@ const reducer = (state: FormState, action: Actions): FormState => {
 const useEditor = () => {
     const [state, dispatch] = React.useReducer(reducer, initialState as ReducerState<FormState>);
 
-    const setName = React.useCallback((name: string) => dispatch({ type: 'set_name', payload: name }), [dispatch]);
-    const setSurname = React.useCallback((surname: string) => dispatch({ type: 'set_surname', payload: surname }), [dispatch]);
-    const setEmail = React.useCallback((email: string) => dispatch({ type: 'set_email', payload: email }), [dispatch]);
+    const setName = (name: string) => dispatch({ type: 'set_name', payload: name });
+    const setSurname = (surname: string) => dispatch({ type: 'set_surname', payload: surname });
+    const setEmail = (email: string) => dispatch({ type: 'set_email', payload: email });
 
     return {
         state,
@@ -52,18 +52,18 @@ const useEditor = () => {
     };
 };
 
-const NameField: React.FC<{ name: string, onChange: (value: string) => void; }> = React.memo(({ name, onChange }) => <TextInput label="Имя" value={name} onChange={(e) => onChange(e.target.value)} />);
+const NameField: React.FC<{ name: string, onChange: (value: string) => void; }> = ({ name, onChange }) => <TextInput label="Имя" value={name} onChange={(e) => onChange(e.target.value)} />;
 
-const SurnameField: React.FC<{ surname: string, onChange: (value: string) => void; }> = React.memo(({ surname, onChange }) => <TextInput label="Фамилия" value={surname} onChange={(e) => onChange(e.target.value)} />);
+const SurnameField: React.FC<{ surname: string, onChange: (value: string) => void; }> = ({ surname, onChange }) => <TextInput label="Фамилия" value={surname} onChange={(e) => onChange(e.target.value)} />;
 
-const EmailField: React.FC<{ email: string, onChange: (value: string) => void; }> = React.memo(({ email, onChange }) => <TextInput label="Email" value={email} onChange={(e) => onChange(e.target.value)} />);
+const EmailField: React.FC<{ email: string, onChange: (value: string) => void; }> = ({ email, onChange }) => <TextInput label="Email" value={email} onChange={(e) => onChange(e.target.value)} />;
 
 export const MemoizationPage = () => {
     const { state, actions } = useEditor();
 
-    const handleChangeName = React.useCallback((value) => actions.setName(value), [actions.setName]);
-    const handleChangeSurname = React.useCallback((value) => actions.setSurname(value), [actions.setSurname]);
-    const handleChangeEmail = React.useCallback((value) => actions.setEmail(value), [actions.setEmail]);
+    const handleChangeName = (value) => actions.setName(value);
+    const handleChangeSurname = (value) => actions.setSurname(value);
+    const handleChangeEmail = (value) => actions.setEmail(value);
 
     return (
         <Fieldset legend="Анкета">
