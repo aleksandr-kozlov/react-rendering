@@ -1,30 +1,16 @@
 import React from 'react';
 import { SimpleGrid, Text, Button, Card, Badge, Group } from '@mantine/core';
 
-const StateContext = React.createContext<string>('green');
-const SetterContext = React.createContext<(newColor: string) => void>(() => {});
-
-const useColorText = () => React.useContext(StateContext);
-const useSetColorText = () => React.useContext(SetterContext);
-
-const TextColorProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-    const [color, setColor] = React.useState('green');
-
-    return (
-        <SetterContext.Provider value={setColor}>
-            <StateContext.Provider value={color}>{children}</StateContext.Provider>
-        </SetterContext.Provider>
-    );
-};
+const Context = React.createContext<{ color: string; setColor:(newColor: string) => void }>({ color: 'green', setColor: () => {} });
 
 const ContextConsumer = () => {
-    const color = useColorText();
+    const { color } = React.useContext(Context);
 
     return <Text style={{ color }}>Текущий цвет: {color}</Text>;
 };
 
 const ContextSetter = () => {
-    const setColor = useSetColorText();
+    const { setColor } = React.useContext(Context);
 
     return (
         <SimpleGrid col={3}>
@@ -67,8 +53,11 @@ const Panel = () => (
     </Card>
 );
 
-export const ContextPage: React.FC = () => (
-        <TextColorProvider>
+export const ContextPage: React.FC = () => {
+    const [color, setColor] = React.useState('green');
+
+    return (
+        <Context.Provider value={{ color, setColor }}>
             <SimpleGrid col={1}>
                 <ContextConsumer />
                 <Description />
@@ -76,5 +65,6 @@ export const ContextPage: React.FC = () => (
                 <ContextSetter />
                 <Panel />
             </SimpleGrid>
-        </TextColorProvider>
+        </Context.Provider>
     );
+};
